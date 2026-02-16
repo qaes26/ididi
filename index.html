@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور نغم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Beiruti:wght@200;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none; /* منع تحديد النص لواقعية أكثر */
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #050505;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a1a' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Beiruti', sans-serif;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+
+        /* حاوية النيون */
+        .neon-container {
+            position: relative;
+            padding: 40px;
+            border: 4px solid #1a1a1a;
+            background: #000;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* النص الأساسي */
+        h1 {
+            font-size: 15vw; /* حجم ضخم يتجاوب مع الشاشة */
+            margin: 0;
+            line-height: 1;
+            color: #222; /* لون مطفأ */
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 5px;
+            transition: all 0.2s;
+            filter: blur(0.5px);
+        }
+
+        /* حالة التشغيل (ON) */
+        body.on {
+            background-color: #11050a; /* إضاءة خافتة في الخلفية */
+        }
+
+        body.on h1 {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff00de,
+                0 0 40px #ff00de,
+                0 0 80px #ff00de,
+                0 0 90px #ff00de,
+                0 0 100px #ff00de;
+            filter: blur(0);
+            animation: flicker 2s infinite alternate;
+        }
+
+        /* تأثير الارتعاش الواقعي للنيون */
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px #ff00de,
+                0 0 40px #ff00de,
+                0 0 80px #ff00de,
+                0 0 90px #ff00de,
+                0 0 100px #ff00de;
+                opacity: 1;
+            }
+            20%, 24%, 55% {       
+                text-shadow: none;
+                opacity: 0.8;
+                color: #444;
+            }
+        }
+
+        /* زر المفتاح الكهربائي */
+        .switch-container {
+            position: relative;
+            width: 80px;
+            height: 120px;
+            background: #333;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid #555;
+        }
+
+        .switch-lever {
+            width: 20px;
+            height: 60px;
+            background: #111;
+            border-radius: 5px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 5px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .switch-lever::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 20%;
+            width: 60%;
+            height: 5px;
+            background: red;
+            border-radius: 2px;
+            box-shadow: 0 0 5px red;
+        }
+
+        /* حركة الزر عند التشغيل */
+        body.on .switch-lever {
+            transform: scaleY(-1); /* قلب الزر */
+            background: #222;
+        }
+        
+        body.on .switch-lever::after {
+            background: #0f0; /* يتحول للأخضر */
+            box-shadow: 0 0 5px #0f0;
+        }
+
+        /* الرسالة السفلية */
+        .message {
+            margin-top: 40px;
+            color: #444;
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s 1s; /* تأخير الظهور */
+            font-weight: 200;
+        }
+
+        body.on .message {
+            opacity: 1;
+            color: #fff;
+            text-shadow: 0 0 10px #ff00de;
+        }
+
+        .instruction {
+            position: absolute;
+            bottom: 20%;
+            color: #666;
+            font-size: 0.9rem;
+            animation: pulse 1s infinite;
+        }
+        
+        body.on .instruction {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            color: #333;
+            font-family: sans-serif;
+        }
+        body.on .signature {
+            color: rgba(255, 0, 222, 0.4);
+        }
+
+        /* صوت التشغيل (بصري) */
+        .spark {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- حاوية النيون -->
+    <div class="neon-container">
+        <h1>نغم</h1>
+    </div>
+
+    <!-- المفتاح -->
+    <div class="switch-container" onclick="toggleLight(this)">
+        <div class="switch-lever"></div>
+    </div>
+
+    <div class="instruction">شغلي النور</div>
+
+    <!-- الرسالة -->
+    <div class="message">
+        <p>لا تخلي أي شي بالدنيا يطفي نورك.</p>
+        <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.7;">أنتِ الاستثناء الجميل.</p>
+    </div>
+
+    <div class="signature">من إعداد قيس جازي</div>
+
+    <script>
+        const body = document.body;
+        let isOn = false;
+
+        // وظيفة الاهتزاز (Haptic) إذا كان موبايل
+        function vibrate() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        function toggleLight(btn) {
+            if (isOn) return; // تمنع الإطفاء (النور لا ينطفئ)
+
+            vibrate();
+            
+            // تأثير صوتي بصري (شرارة)
+            createSparks(btn);
+
+            // تأخير بسيط لمحاكاة الكهرباء
+            setTimeout(() => {
+                body.classList.add('on');
+                isOn = true;
+            }, 100);
+        }
+
+        function createSparks(element) {
+            const rect = element.getBoundingClientRect();
+            for(let i=0; i<10; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                spark.style.left = (rect.left + rect.width/2) + 'px';
+                spark.style.top = (rect.top + rect.height/2) + 'px';
+                document.body.appendChild(spark);
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 50 + 20;
+
+                const anim = spark.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${Math.cos(angle)*velocity}px, ${Math.sin(angle)*velocity}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 300,
+                    easing: 'ease-out'
+                });
+
+                anim.onfinish = () => spark.remove();
+            }
+        }
+    </script>
+</body>
+</html>
+
+
